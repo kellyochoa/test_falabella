@@ -1,0 +1,8 @@
+#surefire
+#Wed Mar 20 22:11:19 CLST 2019
+maven.ext.class.path=C\:\\Program Files\\NetBeans 8.1\\java\\maven-nblib\\netbeans-eventspy.jar
+user.dir=C\:\\Users\\Kelly_Esthefania\\Documents\\NetBeansProjects\\Test_Falabella
+file.encoding=UTF-8
+localRepository=C\:\\Users\\Kelly_Esthefania\\.m2\\repository
+basedir=C\:\\Users\\Kelly_Esthefania\\Documents\\NetBeansProjects\\Test_Falabella
+test=PruebaChrome
