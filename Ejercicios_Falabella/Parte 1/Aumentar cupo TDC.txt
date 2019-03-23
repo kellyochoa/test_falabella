@@ -1,0 +1,171 @@
+Feature: Aumentar cupo de tarjeta de crédito
+  Description: Evaluar los ingresos mensuales de un usuario y su historial crediticio para otorgar el aumento de cupo de tarjeta de crédito
+  Background: El usuario ha iniciado sesión
+    Given la página web del banco se encuentra abierta y el usuario está registrado
+    When hago clic en el botón "Mi cuenta" en la pantalla home
+    And ingreso "<rutUsuario>" en el campo RUT en la pantalla home
+    And ingreso "<clave>" en el campo clave en la pantalla home
+    And hago clic en el botón "Ingresar" en la pantalla home
+    Then se visualiza la etiqueta "Bienvenido" "<nombreUsuario>" en pantalla Resumen de Productos
+
+  @AmbientePruebas @chrome
+    Examples:
+      | rut_usuario | clave | nombreUsuario |
+      | 26606988    | test  | Kelly Ochoa   |
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | rut_usuario | clave | nombreUsuario |
+      | 26606988    | test  | Kelly Ochoa   |
+
+ @Automatizable
+  Scenario Outline: Validar que el usuario posee cuenta corriente
+    Given El usuario tiene una cuenta corriente creada
+    When posiciono el puntero en la etiqueta "Operaciones" en el menú principal
+    And  se visualiza la opción "Cuentas y productos" en la pantalla Resumen de Productos
+    And  hago clic en la opción "Cuentas y productos" en la pantalla Resumen de Productos
+    And  se visualiza listado de cuentas del usuario en la pantalla Cuentas y Productos
+    And  selecciono "<tipoCuenta>" como tipo de cuenta en la pantalla Cuentas y Productos
+    And  selecciono la opción "Datos de la cuenta" en la pantalla Cuentas y Productos
+    And  se visualiza la etiqueta "Detalle de cuenta" en la pantalla Detalle de Cuentas y Productos
+    Then se visualiza la etiqueta "Corriente" en el campo Tipo de Cuenta en la pantalla Detalle de Cuentas y Productos
+
+  @AmbientePruebas @chrome
+    Examples:
+      | tipoCuenta      |
+      | Cuenta estandar |
+      | Cuenta free     |
+      | Cuenta sueldo   |
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | tipoCuenta      |
+      | Cuenta estandar |
+      | Cuenta free     |
+      | Cuenta sueldo   |
+
+  @Automatizable
+  Scenario Outline: Validar que el usuario posee una tarjeta de crédito activa y se visualiza el límite de tarjeta
+    Given El usuario tiene una cuenta corriente creada
+    When posiciono el puntero en la etiqueta "Operaciones" en el menú principal
+    And  se visualiza la opción "Tarjetas de crédito" en la pantalla Resumen de Productos
+    And  hago clic en la opción "Tarjetas de Crédito" en la pantalla Resumen de Productos
+    And  se visualiza listado de Tarjetas de crédito del usuario en la pantalla Tarjetas de Crédito
+    Then se visualiza "<tipoTarjeta>" en el campo Tipo de Tarjeta en la pantalla Tarjetas de Crédito
+	And  selecciono la opción "Detalle de tarjeta" en la pantalla Tarjetas de crédito
+    And  se visualiza "<limiteTarjeta>" como límite de tarjeta en la pantalla Detalle de Tarjetas de crédito
+    
+  @AmbientePruebas @chrome
+    Examples:
+      | tipoTarjeta |
+      | Visa        |
+      | Mastercard  |
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | tipoTarjeta |
+      | Visa        |
+      | Mastercard  |
+
+  @Automatizable
+  Scenario Outline: Solicitar aumento de cupo de la tarjeta de crédito actual
+    Given El usuario inicio sesión de manera exitosa
+    When posiciono el puntero en la etiqueta "Operaciones" en pantalla Menú Principal
+    And  se visualiza la opción "Tarjetas de Crédito" en la pantalla Resumen de Productos
+    And  hago clic en la opción "Tarjetas de Crédito" en la pantalla Resumen de Productos
+    And  hago clic en el tab "Aumento de Cupo" en la pantalla Tarjeta de Crédito
+    Then se visualiza la etiqueta "Solicitud de aumento de cupo de su tarjeta de crédito" en pantalla Aumento de Cupo
+    When selecciono "<tipoTarjeta>" como tarjeta de crédito en pantalla Aumento de Cupo
+    And  ingreso <mailContacto> como correo electrónico en pantalla Aumento de Cupo
+    And  ingreso <codigoTelefono> como código de teléfono en pantalla Aumento de Cupo
+    And  ingreso <telefono> como teléfono en pantalla Aumento de Cupo
+    And  ingreso <codigoCelular> como código de celular en pantalla Aumento de Cupo
+    And  ingreso <celular> como celular en pantalla Aumento de Cupo
+    And  hago clic en el botón "Enviar" en pantalla Aumento de Cupo
+    Then se muestra la etiqueta "Su solicitud de aumento de cupo de tarjeta de crédito ha sido enviado satisfactoriamente" en pantalla Aumento de Cupo
+
+  @AmbientePruebas @chrome
+    Examples:
+      | tipoTarjeta | mailContacto     | codigoTelefono | telefono  | codigoCelular | celular   |
+      | Visa        | keor08@gmail.com | 56             | 125415254 | 56            | 944865243 |
+      | Mastercard  | keor08@gmail.com | 56             | 125415254 | 56            | 944865243 |
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | tipoTarjeta | mailContacto     | codigoTelefono | telefono  | codigoCelular | celular   |
+      | Visa        | keor08@gmail.com | 56             | 125415254 | 56            | 944865243 |
+      | Mastercard  | keor08@gmail.com | 56             | 125415254 | 56            | 944865243 |
+
+
+  @Automatizable
+  Scenario Outline: Validar que el usuario ingrese el correo electrónico con formato correcto para solicitar el aumento de cupo de la tarjeta de crédito
+    Given El usuario inicio sesión de manera exitosa
+    When posiciono el puntero en la etiqueta "Operaciones" en pantalla Menú Principal
+    And  se visualiza la opción "Tarjetas de Crédito" en la pantalla Resumen de Productos
+    And  hago clic en la opción "Tarjetas de Crédito" en la pantalla Resumen de Productos
+    And  hago clic en el tab "Aumento de Cupo" en la pantalla Tarjeta de Crédito
+    Then se visualiza la etiqueta "Solicitud de aumento de cupo de su tarjeta de crédito" en pantalla Aumento de Cupo
+	When selecciono "<tipoTarjeta>" como tarjeta de crédito en pantalla Aumento de Cupo
+    And  ingreso <mailContacto> como correo electrónico en pantalla Aumento de Cupo
+    Then se visualiza pop-up con el mensaje "Correo electrónico con formato incorrecto"
+
+	@AmbientePruebas @chrome
+    Examples:
+      | tipoTarjeta | mailContacto     | 
+      | Visa        | keor08@gmail.com | 
+      | Mastercard  | keor08@gmail.com |
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | tipoTarjeta | mailContacto     |
+      | Visa        | keor08@gmail.com |
+      | Mastercard  | keor08@gmail.com |
+   
+  @Automatizable
+  Scenario Outline: Validar si los ingresos mensuales del cliente son mayores a los egresos mensuales
+    Given El usuario inicio sesión de manera exitosa
+    When posiciono el puntero en la etiqueta "Operaciones" en pantalla Menú Principal
+	And  se visualiza la opción "Tarjetas de crédito" en la pantalla Resumen de Productos
+    And  hago clic en la opción "Tarjetas de crédito" en la pantalla Resumen de Productos
+    And  se visualiza listado de Tarjetas de crédito del usuario en la pantalla Tarjetas de crédito
+    And  selecciono "<tipoTarjeta>" como tipo de tarjeta en la pantalla Tarjetas de crédito
+    And  selecciono la opción "Detalle de tarjeta" en la pantalla Tarjetas de crédito
+    And  se visualiza "<moneda>" "<totalIngresos>" como total de ingresos en la pantalla Resumen de Productos
+    And  se visualiza "<moneda>" "<totalEgresos>" como total de egresos en la pantalla Resumen de Productos
+    Then se visualiza "<totalIngresos>" total de ingresos es mayor que "<totalEgresos>" como total de egresos en la pantalla Resumen de Productos
+  
+  @AmbientePruebas @chrome
+    Examples:
+      | tipoTarjeta |moneda | totalIngresos| totalEgresos  | 
+      | Visa        |$CLP   | 500000       | 200000        |
+      | Mastercard  |$CLP   | 700.00       | 300.00        | 
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | tipoTarjeta |moneda | totalIngresos| totalEgresos  | 
+      | Visa        |$CLP   | 500000       | 200000        |
+      | Mastercard  |$CLP   | 700.00       | 300.00        | 
+
+
+  @Manual
+  Scenario Outline: Consultar Historial Crediticio para evaluar si es un cliente con buen historial
+    Given la página web de Equifax se encuentra abierta y el usuario está registrado
+	When el usuario inicia sesión en la página Equifax
+    And hacer clic 	en la opción "Mi informe comercial"
+	And hacer clic en la sección Ley 20.575. "Mi informe comercial"
+	And se ingresa el "<nombre>" "<apellido>" "<rut>" "<nro_serie>" "<email>" "<conf_email>"
+	And acepto Términos y condiciones
+	And hacer clic en el botón "Continuar"
+	Then se visualiza Reporte de historial crediticio aprobado	
+	
+@AmbientePruebas @chrome
+    Examples:
+      | nombre | apellido | rut         | nro_serie  | email         | conf_email    |
+      | Kelly  | Ochoa    | 26606958-8  | 600700500  | keor08@gmail  | keor08@gmail  |
+ 
+
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | nombre | apellido | rut         | nro_serie  | email         | conf_email    |
+      | Kelly  | Ochoa    | 26606958-8  | 600700500  | keor08@gmail  | keor08@gmail  |
+ 

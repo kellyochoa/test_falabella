@@ -1,0 +1,268 @@
+﻿Feature: Gestionar compra a través del carrito de compra
+Description: Como Usuario de Fallabella quiero realizar una compra a través del carrito desde la selección del producto hasta el proceso de pago
+para validar que la compra se realiza de forma satisfactoria
+
+
+Background: Inicio de sesion de usuario
+	Given Fallabella web se encuentra abierta y el usuario está registrado en la página web con una dirección de compra
+    When posiciono el puntero en el icono de usuario dentro de la pantalla Home 
+	And  se muestra un boton "Iniciar sesion" en la barra superior 
+	And  hago clic en el botón "Iniciar sesion" en la barra superior
+	And  se muestra pantalla de Login
+	And  ingreso "<correoElectronico>" como correo en el campo "email" en la pantalla Login
+    And  escribo "<contrasena>" en el campo "clave" en pantalla Login
+    And  presiono el botón "Ingresar" en pantalla Login
+	Then inicio sesion de forma exitosa en pantalla Buscar artículo dentro del flujo compra de articulo
+
+@Automatizable
+  Scenario Outline: Validar la compra a través del carrito de compras 
+	When ingreso "<nombreProducto>" en la barra de búsqueda de la pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en la pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho 
+	Then se muestra la pantalla Elige tus opciones de despacho en la pantalla despacho
+	And  selecciono "<opcionDespacho>" en la pantalla despacho
+	When hago clic en el boton "USAR ESTA DIRECCION" en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el boton "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago 
+	And  selecciono "<medioPago>" en pantalla Pago
+	And  registro datos de pago en pantalla Pago
+	When hago clic en el boton "Pagar" en pantalla Pago
+	Then se muestra mensaje de compra exitosa en pantalla Pago
+	And  se muestra boleta de venta electronica en pantalla Compra Exitosa de Artículo
+  
+  @AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago         |                    
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | CMR  Falabella    |
+	  
+  @AmbientePruebas @internetExplorer
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago         |                    
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | CMR  Falabella    |
+	    
+
+@Automatizable	
+  Scenario Outline: Validar la compra de un producto que ya no se encuentre en stock
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA"  en pantalla Buscar artículo
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo
+	When hago clic en el botón "VER BOLSA DE COMPRAS" 
+	Then se muestra la pantalla Bolsa de compra 
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho
+	Then se muestra la pantalla Elige tus opciones de despacho 
+	And  selecciono "<opcionDespacho>" en la pantalla despacho
+	When hago clic en el botón "USAR ESTA DIRECCION" en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el botón "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago
+	And  selecciono "<medioPago>" en pantalla Pago
+	And  registro datos de pago en pantalla Pago
+	When hago clic en el boton "Pagar" en pantalla Pago
+	Then se muestra el mensaje "El producto selecionado no se encuentra disponible" 
+
+@AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena      |nombreProducto  | opcionDespacho       | medioPago       |                    
+	  | keor08@gmail.com   | test            |Notebook		  |Despacho a domicilio  | CMR  Falabella  |
+
+@AmbientePruebas @internetExplorer	  
+	Examples:
+      | correo             | contrasena      |nombreProducto  | opcionDespacho       | medioPago       |                    
+	  | keor08@gmail.com   | test            |Notebook		  |Despacho a domicilio  | CMR  Falabella  |
+
+
+@Automatizable
+ Scenario Outline: Validar que no pueda realizar la compra un usuario no registrado
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" en pantalla Buscar artículo 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+	And se muestra pantalla para iniciar sesión
+	And se ingresa "<correo_incorrecto>" en pantalla iniciar sesión
+	When hago clic en el botón "Continuar" en pantalla iniciar sesión
+	Then se muestra el mensaje "Por favor ingresa una dirección e-mail válida"
+
+@AmbientePruebas @chrome
+    Examples:
+      | correo_incorrecto   |  nombreProducto  |
+	  | keorgmail.com       |  Notebook		   |
+	  
+@AmbientePruebas @internetExplorer	  	  
+	 Examples:
+      | correo_incorrecto   |  nombreProducto  |
+	  | keorgmail.com       |  Notebook		   | 
+
+@Automatizable
+  Scenario Outline: Validar el ingreso de un nro. de tarjeta correcto para pagar
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA"  en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" en pantalla Buscar artículo 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho
+	Then se muestra la pantalla Elige tus opciones de despacho en la pantalla despacho
+	And  selecciono "<opcionDespacho>" en la pantalla despacho
+	When hago clic en el botón "USAR ESTA DIRECCION"  en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho  en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el botón "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago
+	And  selecciono "<medioPago>" en pantalla Pago
+	And se ingresa "<nro_tarjeta>" en pantalla Pago
+	When hago clic en el botón "Pagar" en pantalla Pago
+	Then se muestra mensaje "El número de la tarjeta de crédito no es válido"
+
+@AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         |           
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1111 1111 1111 1111 |
+
+@AmbientePruebas @internetExplorer	
+	Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         |           
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1111 1111 1111 1111 |  
+	  
+	  
+@Automatizable
+  Scenario Outline: Validar que la tarjeta ingresada para pagar tenga un fondo mayor o igual al monto a pagar
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA"  en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" en pantalla Buscar artículo 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho
+	Then se muestra la pantalla Elige tus opciones de despacho en la pantalla despacho
+	And  selecciono "<opcionDespacho>"  en la pantalla despacho
+	When hago clic en el botón "USAR ESTA DIRECCION"  en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho  en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el botón "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago
+	And  selecciono "<medioPago>" en pantalla Pago
+	And se ingresa "<nro_tarjeta>" en pantalla Pago
+	And se ingresa "<cvv>" en pantalla Pago
+	And se selecciona "<mes>" en pantalla Pago
+	And se selecciona "<anno>" en pantalla Pago
+	When hago clic en el botón "Pagar" en pantalla Pago
+	Then se muestra mensaje "El saldo de la tarjeta de crédito no es suficiente"
+		
+@AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2021 |
+	  
+@AmbientePruebas @internetExplorer
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2021 |	  
+	  
+@Automatizable
+  Scenario Outline: Validar que la tarjeta de crédito ingresada para pagar no se encuentre vencida
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA"  en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" en pantalla Buscar artículo 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho
+	Then se muestra la pantalla Elige tus opciones de despacho en la pantalla despacho
+	And  selecciono "<opcionDespacho>"  en la pantalla despacho
+	When hago clic en el botón "USAR ESTA DIRECCION" en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el boton "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago
+	And  selecciono "<medioPago>" en pantalla Pago
+	And se ingresa "<nro_tarjeta>" en pantalla Pago
+	And se ingresa "<cvv>" en pantalla Pago
+	And se selecciona "<mes>" en pantalla Pago
+	And se selecciona "<anno>" en pantalla Pago
+	When hago clic en el botón "Pagar" en pantalla Pago
+	Then se muestra mensaje "La tarjeta de crédito no se encuentra vigente"
+		
+@AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2018 |
+	  
+@AmbientePruebas @internetExplorer
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2018 |	  
+	  	  	  
+	  
+@Automatizable
+  Scenario Outline: Validar que el cvv de la tarjeta sea correcto
+	When ingreso "<nombreProducto>" en la barra de búsqueda pantalla Buscar artículo
+	And  se muestra el listado de productos filtrados en pantalla Buscar artículo
+	And  selecciono el artículo a comprar en pantalla Buscar artículo
+	And  posiciono el puntero en el artículo a comprar en pantalla Buscar artículo
+	And  se muestra el botón "AGREGAR A LA BOLSA" en pantalla Buscar artículo
+	And  hago clic en el botón "AGREGAR A LA BOLSA"  en pantalla Buscar artículo 
+	Then se muestra un popup con el título "Agregado" en pantalla Buscar artículo 
+	When hago clic en el botón "VER BOLSA DE COMPRAS" en pantalla Buscar artículo 
+	Then se muestra la pantalla Bolsa de compra
+	And  hago clic en el botón "IR A COMPRAR" en la pantalla Bolsa de compra
+    And se muestra la pantalla Despacho
+	Then se muestra la pantalla Elige tus opciones de despacho en la pantalla despacho
+	And  selecciono "<opcionDespacho>"  en la pantalla despacho
+	When hago clic en el boton "USAR ESTA DIRECCION"  en la pantalla despacho
+	Then se muestra la pantalla Horario de Despacho  en la pantalla despacho
+	And  selecciono el Horario de Despacho en la pantalla despacho
+	When hago clic en el botón "Continuar" en la pantalla despacho
+	Then se muestra pantalla Pago con formulario de datos de pago
+	And  selecciono "<medioPago>" en pantalla Pago
+	And se ingresa "<nro_tarjeta>" en pantalla Pago
+	And se ingresa "<cvv>" en pantalla Pago
+	And se selecciona "<mes>" en pantalla Pago
+	And se selecciona "<anno>" en pantalla Pago
+	When hago clic en el botón "Pagar" en pantalla Pago
+	Then se muestra mensaje "El cvv no es valido"
+		
+@AmbientePruebas @chrome
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2021 |
+	  
+@AmbientePruebas @internetExplorer
+    Examples:
+      | correo             | contrasena | nombreProducto  | opcionDespacho       | medioPago                  | nro_tarjeta         | cvv | mes  | anno |
+      | keor08@gmail.com   | test       |Notebook		  |Despacho a domicilio  | Otras tarjetas de crédito  | 1234 5678 9123 4567 | 123 | 07   | 2021 |	  
+	  	  	  	
+      

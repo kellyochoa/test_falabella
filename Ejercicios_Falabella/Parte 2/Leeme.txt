@@ -1,0 +1,4 @@
+Para ejecutar las pruebas:
+
+- Descargar carpetas
+- Colocar la carpeta Driver en el Disco local C

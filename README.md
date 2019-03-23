@@ -1,5 +1,5 @@
 # test_falabella
 
-Para ejecutar las pruebas:
-1. Descargue el proyecto
-2. Copie la carpeta Driver en el disco local C
+Para ejecutar las pruebas de la parte 2:
+- Descargar carpetas
+- Colocar la carpeta Driver en el Disco local C
